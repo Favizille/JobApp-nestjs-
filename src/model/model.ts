@@ -7,7 +7,7 @@ export class Job{
     @Column()
         title: string
     @Column()
-        descrption:string
+        description:string
     @Column()
         nationality: string
 }
