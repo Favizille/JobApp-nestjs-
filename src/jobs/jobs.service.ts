@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable, NotFoundException, Param} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from 'src/model/model';
+import { arrayBuffer } from 'stream/consumers';
 import { Repository } from 'typeorm';
 import { JobDto } from './jobs.dto';
 
@@ -10,11 +11,21 @@ export class JobsService {
 
     getAll(){
         const getAllValues = this.jobRepository.find()
+
+        if(typeof Array !== 'undefined' && Array.length === 0){
+            throw new NotFoundException("No jobs yet")
+        }
+
         return getAllValues;
     }
 
     async createJob(jobDto:JobDto):Promise<Job>{
         const createSpecJob = await this.jobRepository.save(jobDto)
+
+        if(!createSpecJob){
+            throw new NotFoundException("Job creation Failed")
+        }
+
         return createSpecJob;
     }
 
@@ -23,27 +34,33 @@ export class JobsService {
             where: {id}
         });
         if(!found){
-            throw new NotFoundException("Task with id not found");
+            throw new NotFoundException("Job with id not found");
         }
 
         return found;
     }
 
-    async updateJob(id:number, jobDto:JobDto) :Promise<Job> {
-       const jobDtoId = this.getJobById(id);
+    updateJob(id:number, jobDto:JobDto) {
+    //    const jobDtoId = this.getJobById(id);
 
     //    jobDtoId = jobDt;
 
-        const updatedJobDto = await this.jobRepository.save(jobDto)
+        const updatedJobDto = this.jobRepository.update({id},jobDto);
+
+        if(!updatedJobDto){
+            throw new NotFoundException("Update failed");
+        }
 
         return updatedJobDto;
 
     }
 
-    async deleteJob(id: number):Promise<string>{
-        const result = await this.jobRepository.delete(id);
+    async deleteJob(id: number){
+        const result = await this.jobRepository.delete({id});
 
-        return "Deleted successfully";
+        if(!result){
+            throw new NotFoundException("Deletion failed");
+        }
 
     }
 

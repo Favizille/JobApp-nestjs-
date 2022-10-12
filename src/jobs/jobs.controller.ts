@@ -25,14 +25,16 @@ export class JobsController {
     }
 
     @Patch('/:id')
-    async updateJob(@Param('id') id:number, @Body() jobDto:JobDto) 
+    updateJob(@Param('id') id:number, @Body() jobDto:JobDto) 
     { 
-        return await this.jobService.updateJob(id, jobDto);
+        return this.jobService.updateJob(id, jobDto);
     }
 
     @Delete('/:id')
-    deleteJob(@Param('id', ParseIntPipe) id:number): Promise<string>
+    deleteJob(@Param('id', ParseIntPipe) id:number)
     {
-        return this.jobService.deleteJob(id);
+        this.jobService.deleteJob(id);
+        return 'Deleted'
+
     }
 }
