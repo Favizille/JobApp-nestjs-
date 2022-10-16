@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException, Param} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from 'src/model/model';
-import { arrayBuffer } from 'stream/consumers';
 import { Repository } from 'typeorm';
 import { JobDto } from './jobs.dto';
 
