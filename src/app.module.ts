@@ -4,10 +4,9 @@ import { AppService } from './app.service';
 import { JobsModule } from './jobs/jobs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Job } from './model/model';
-import { EmployeesController } from './employees/employees.controller';
-import { EmployeesService } from './employees/employees.service';
 import { EmployeesModule } from './employees/employees.module';
 import { Employee } from './employees/model/model';
+import { Connection } from 'typeorm';
 
 @Module({
   imports: [
@@ -24,8 +23,12 @@ import { Employee } from './employees/model/model';
     JobsModule,
     EmployeesModule
     ],
-  controllers: [AppController, EmployeesController],
-  providers: [AppService, EmployeesService],
+  controllers: [AppController],
+  providers: [AppService],
   
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly connection: Connection){
+
+  }
+}

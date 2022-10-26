@@ -1,9 +1,6 @@
 import { IsNotEmpty } from "class-validator"
 
-export class JobDto {
-    @IsNotEmpty()
-    id:number
-
+export class EmployeeDto{
     @IsNotEmpty()
     first_name:string
 
